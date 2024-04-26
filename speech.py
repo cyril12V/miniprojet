@@ -16,11 +16,17 @@ def listen_for_commands():
     except sr.UnknownValueError:
         print("Could not understand audio")
         return None
+    except sr.RequestError:
+        print("Could not request results; check your internet connection")
+        return None
 
 def send_command(command, host='10.38.165.207', port=48151):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.connect((host, port))
-        sock.sendall(command.encode('utf-8'))
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.connect((host, port))
+            sock.sendall(command.encode('utf-8'))
+    except socket.error as e:
+        print(f"Failed to connect to {host}:{port}, error: {e}")
 
 if __name__ == "__main__":
     while True:
