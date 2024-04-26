@@ -14,7 +14,7 @@ def setup_gpio():
 def main():
     setup_gpio()
     host = ''
-    port = 12345
+    port = 48151
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.bind((host, port))
         sock.listen(1)
