@@ -52,13 +52,15 @@ def stop():
 
 # Gestion du nettoyage des GPIO
 try:
-    # Placez ici votre boucle ou logique principale
-    pass
+    drive_forward()  # Commence à avancer immédiatement
+    while True:  # Boucle pour maintenir le programme en cours d'exécution
+        time.sleep(1)  # Attendre un peu (ici une seconde)
+except KeyboardInterrupt:
+    stop()
+    print("Arrêt du robot")
 finally:
     # Assurez-vous que le nettoyage est fait correctement à la fin
     pwm_a.stop()
     pwm_b.stop()
     GPIO.cleanup()
-
-# Votre code serveur ou autres fonctions ici
-drive_forward()
+    print("GPIO nettoyé")
