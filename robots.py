@@ -6,10 +6,46 @@ def setup_gpio():
     GPIO.setwarnings(False)
     GPIO.cleanup()
     GPIO.setmode(GPIO.BCM)
-    # Setup GPIO pins as before
-    # Initialize PWM as before
+    GPIO.setup(ENA, GPIO.OUT)
+    GPIO.setup(IN1, GPIO.OUT)
+    GPIO.setup(IN2, GPIO.OUT)
+    GPIO.setup(ENB, GPIO.OUT)
+    GPIO.setup(IN3, GPIO.OUT)
+    GPIO.setup(IN4, GPIO.OUT)
+    GPIO.setup(ldr_pin, GPIO.IN)
+    GPIO.setup(trigger_pin, GPIO.OUT)
+    GPIO.setup(echo_pin, GPIO.IN)
 
-# Setup and loop as before
+ENA = 17
+IN1 = 27
+IN2 = 22
+ENB = 18
+IN3 = 23
+IN4 = 24
+ldr_pin = 5
+trigger_pin = 6
+echo_pin = 13
+light_threshold = 700
+sonar_threshold = 200
+
+setup_gpio()
+
+pwm_a = GPIO.PWM(ENA, 100)
+pwm_b = GPIO.PWM(ENB, 100)
+pwm_a.start(0)
+pwm_b.start(0)
+
+def drive_forward():
+    GPIO.output(IN1, GPIO.HIGH)
+    GPIO.output(IN2, GPIO.LOW)
+    GPIO.output(IN3, GPIO.LOW)
+    GPIO.output(IN4, GPIO.HIGH)
+    pwm_a.ChangeDutyCycle(100)
+    pwm_b.ChangeDutyCycle(100)
+
+def stop():
+    pwm_a.ChangeDutyCycle(0)
+    pwm_b.ChangeDutyCycle(0)
 
 def main():
     setup_gpio()
@@ -41,4 +77,7 @@ if __name__ == "__main__":
         stop()
         print("Arrêt du robot")
     finally:
-        # Cleanup GPIO as before
+        pwm_a.stop()
+        pwm_b.stop()
+        GPIO.cleanup()
+        print("GPIO nettoyé")
