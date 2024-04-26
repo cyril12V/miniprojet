@@ -61,3 +61,4 @@ finally:
     GPIO.cleanup()
 
 # Votre code serveur ou autres fonctions ici
+drive_forward()
